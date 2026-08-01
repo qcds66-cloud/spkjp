@@ -540,7 +540,7 @@ if st.sidebar.button("回到首頁 / 重新開始"):
 pause_sec = st.sidebar.slider("朗讀後暫停秒數", 0.5, 10.0, 2.5, 0.5)
 
 # --- 主畫面邏輯 ---
-st.markdown("<p style='font-size: 35px; font-weight: bold; color: #2C3E50;'>會日語 單字學習系統 (測試版)</p>", unsafe_allow_html=True)
+st.markdown("<p style='font-size: 30px; font-weight: bold; color: #2C3E50;'>會日語 單字學習系統 (測試版)</p>", unsafe_allow_html=True)
 
 active_list = [w for w in word_db if str(w[0]) == current_lesson_num]
 
@@ -562,8 +562,8 @@ else:
         f"""
         <div style="background-color: {COLOR['card']}; padding: 30px; border-radius: 10px; box-shadow: 2px 2px 10px rgba(0,0,0,0.1); margin-bottom: 20px;">
             <h1 style="color: {COLOR['kanji']}; font-size: 40px; margin-bottom: 5px;">{data[2] or data[1]}</h1>
-            <h2 style="color: {COLOR['kana']}; font-size: 30px; margin-top: 0px;">{data[1]}</h2>
-            <h3 style="color: {COLOR['mean']}; font-size: 24px;">【 {data[3]} 】</h3>
+            <h2 style="color: {COLOR['kana']}; font-size: 30px; margin-top: 0px;">{data[1]}</h1>
+            <h3 style="color: {COLOR['mean']}; font-size: 24px;">【 {data[3]} 】</h1>
             <hr style="border: 0; border-top: 1px solid #eee; margin: 15px 0;">
             <p style="color: #566573; font-size: 20px; line-height: 1.6; text-align: left;">
                 <b>例句：</b>{data[4]}<br>
