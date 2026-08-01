@@ -563,9 +563,9 @@ else:
     st.markdown(
         f"""
         <div style="background-color: {COLOR['card']}; padding: 30px; border-radius: 10px; box-shadow: 2px 2px 10px rgba(0,0,0,0.1); margin-bottom: 20px;">
-            <h1 style="color: {COLOR['kanji']}; font-size: 40px; margin-bottom: 5px;">{data[2] or data[1]}</h1>
-            <h2 style="color: {COLOR['kana']}; font-size: 30px; margin-top: 0px;">{data[1]}</h2>
-            <h3 style="color: {COLOR['mean']}; font-size: 24px;">【 {data[3]} 】</h3>
+            <h1 style="color: {COLOR['kanji']}; font-size: 30px; margin-bottom: 5px;">{data[2] or data[1]}</h1>
+            <h2 style="color: {COLOR['kana']}; font-size: 25px; margin-top: 0px;">{data[1]}</h2>
+            <h3 style="color: {COLOR['mean']}; font-size: 20px;">【 {data[3]} 】</h3>
             <hr style="border: 0; border-top: 1px solid #eee; margin: 15px 0;">
             <p style="color: #566573; font-size: 20px; line-height: 1.6; text-align: left;">
                 <b>例句：</b>{data[4]}<br>
