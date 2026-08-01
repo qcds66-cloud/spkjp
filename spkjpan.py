@@ -12,7 +12,7 @@ except ImportError:
 
 # --- 網頁版面與顏色設定 ---
 st.set_page_config(
-    page_title="日文學習系統",
+    page_title="會日語單字學習系統",
     page_icon="🇯🇵",
     layout="centered"
 )
