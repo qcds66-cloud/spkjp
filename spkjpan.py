@@ -527,7 +527,7 @@ if "current_idx" not in st.session_state:
     st.session_state.current_idx = 0
 
 # --- 側邊欄設定與導覽 ---
-st.sidebar.title("🇯🇵 日文單字學習系統")
+st.sidebar.title("會日本語初階1單字學習系統")
 lesson_options = [f"第 {i} 課" for i in range(1, 9)]
 selected_lesson_str = st.sidebar.selectbox("選擇課程", lesson_options)
 
@@ -541,7 +541,7 @@ pause_sec = st.sidebar.slider("朗讀後暫停秒數", 0.5, 10.0, 2.5, 0.5)
 
 # --- 主畫面邏輯 ---
 # 這裡將標題改為較小的大小 (您可以自由調整 font-size 數值)
-st.markdown("<p style='font-size: 24px; font-weight: bold; color: #2C3E50;'>會日語 單字學習系統 (Web 版)</p>", unsafe_allow_html=True)
+st.markdown("<p style='font-size: 24px; font-weight: bold; color: #2C3E50;'>會日語 單字學習系統 (測試版)</p>", unsafe_allow_html=True)
 
 active_list = [w for w in word_db if str(w[0]) == current_lesson_num]
 
