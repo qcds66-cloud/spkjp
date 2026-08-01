@@ -1,25 +1,31 @@
-import tkinter as tk
-import threading
+import streamlit as st
 import time
-import os
 
-# --- 初始化 ---
+# --- 初始化設定 ---
 try:
     from gtts import gTTS
     import pygame
-    pygame.mixer.init()
+    # 初始化 pygame 音效混音器
+    if not pygame.mixer.get_init():
+        pygame.mixer.init()
     HAS_AUDIO = True
 except ImportError:
     HAS_AUDIO = False
 
-# --- 顏色與設定 ---
+# --- 網頁版面與顏色設定 ---
+st.set_page_config(
+    page_title="日文學習系統",
+    page_icon="🇯🇵",
+    layout="centered"
+)
+
 COLOR = {
     "bg": "#E5E7E9", "card": "#FFFFFF",
     "kanji": "#2C3E50", "kana": "#C0392B",
     "mean": "#27AE60", "btn": "#BDC3C7"
 }
 
-# --- 資料庫 (完整保留) ---
+# --- 資料庫 (完整保留第 1-8 課) ---
 word_db = [
     # 第 1 課
     ["1", "わたし", "私", "我", "私は台湾人です。", "わたしは たいわんじんです。", "我是台灣人。"],
@@ -37,7 +43,7 @@ word_db = [
     ["1", "だいがく", "大学", "大學", "兄は大学で経済を勉強しています。", "あには だいがくで けいざいを べんきょうしています。", "哥哥正在大學學習經濟。"],
     ["1", "にほんごがっこう", "日本語学校", "日本語學校", "毎日、日本語学校に通っています。", "まいにち にほんごがっこうに かよっています。", "我每天去日本語學校上課。"],
     ["1", "おしごと", "お仕事", "工作", "お仕事は何をしていますか。", "おしごとは なにを していますか。", "您的工作是做什麼的呢？"],
-    ["1", "がくせい", "學生", "學生", "妹はまだ大学生です。", "いもうとは まだ だいがくせいです。", "妹妹還是個大學生。"],
+    ["1", "がくせい", "学生", "學生", "妹はまだ大学生です。", "いもうとは まだ だいがくせいです。", "妹妹還是個大學生。"],
     ["1", "せんせい", "先生", "老師", "田中先生はとても親切です。", "たなかせんせいは とても しんせつです。", "田中老師非常親切。"],
     ["1", "きょうし", "教師", "教師", "母は小学校の教師です。", "ははは しょうがっこうの きょうしです。", "我母親是小學教師。"],
     ["1", "かいしゃいん", "会社員", "公司職員", "父は会社員として働いています。", "ちちは かいしゃいんとして はたらいています。", "父親作為公司職員在工作。"],
@@ -170,7 +176,7 @@ word_db = [
     ["3", "スキー", "", "滑雪", "冬は北海道でスキーをします。", "ふゆは ほっかいどうで すきーを します。", "冬天在北海道滑雪。"],
     ["3", "パーティー", "", "派對", "週末にパーティーがあります。", "しゅうまつに ぱーてぃーが あります。", "周末有派對。"],
     ["3", "はなび", "花火", "煙火", "夏休みに花火を見に行きます。", "なつやすみに はなびを みに いきます。", "暑假去看煙火。"],
-    ["3", "おはなみ", "お花見", "賞花", "公園でお花見をします。", "こうえんでお h なみを します。", "在公園賞花。"],
+    ["3", "おはなみ", "お花見", "賞花", "公園でお花見をします。", "こうえんで おはなみを します。", "在公園賞花。"],
     ["3", "ホームステイ", "", "寄宿家庭", "アメリカでホームステイをしました。", "あめりかで ほーむすていを しました。", "在美國做了寄宿家庭體驗。"],
     ["3", "おまつり", "お祭り", "祭典", "日本のお祭り賑やかです。", "にほんの おまつり にぎやかです。", "日本的祭典很熱鬧。"],
     ["3", "うみ", "海", "海", "夏は海へ行きたいです。", "なつは うみへ いきたいです。", "夏天想去海邊。"],
@@ -206,7 +212,7 @@ word_db = [
     ["3", "ひるごはん", "昼ご飯", "午餐", "昼ご飯を一緒に食べましょう。", "ひるごはんを いっしょに たべましょう。", "一起吃午餐吧。"],
     ["3", "うち", "家", "家", "うちに帰ります。", "うちに かえります。", "回家。"],
     ["3", "かいしゃ", "会社", "公司", "会社は九時からです。", "かいしゃは くじからです。", "公司從九點開始。"],
-    ["3", "がっこう", "學校", "學校", "学校を休みます。", "がっこうを やすみます。", "向學校請假。"],
+    ["3", "がっこう", "学校", "學校", "学校を休みます。", "がっこうを やすみます。", "向學校請假。"],
     ["3", "コンビニ", "", "便利商店", "コンビニでお酒を買います。", "こんびにで おさけを かいます。", "在便利商店買酒。"],
     ["3", "ぎゅうにゅう", "牛乳", "牛奶", "ぎゅうにゅうは冷蔵庫にあります。", "ぎゅうにゅうは れいぞうこに あります。", "牛奶在冰箱裡。"],
     ["3", "くだもの", "果物", "水果", "果物を買いました。", "くだものを かいました。", "買了水果。"],
@@ -346,15 +352,15 @@ word_db = [
     ["5", "ひまな", "暇な", "空閒的", "暇な時は何をしますか。", "ひまな ときは なにを しますか。", "空閒的時候做什麼？"],
     ["5", "どうして", "", "為什麼", "どうして学校を休みましたか。", "どうして がっこうを やすみましたか。", "為什麼學校請假？"],
     ["5", "こんど", "今度", "下次/這次", "今度の休みはいつですか。", "こんどの やすみは いつですか。", "下次放假是什麼時候？"],
-    ["5", "こんばん", "今晩", "今晚", "今晩一緒にご飯を食べませんか。", "こんばん いっしょに ごはんを たべませんか。", "今晚要不要一起吃飯？"],
+    ["5", "こんばん", "今晩", "今晩", "今晩一緒にご飯を食べませんか。", "こんばん いっしょに ごはんを たべませんか。", "今晩要不要一起吃飯？"],
     ["5", "ことし", "今年", "今年", "今年は二十歳になります。", "ことしは はたちに なります。", "今年滿二十歲。"],
-    ["5", "らいねん", "来年", "明年", "来年大学を卒業します。", "らいねん だいがくを そつぎょうします。", "明年大學畢業。"],
+    ["5", "らいねん", "來年", "明年", "来年大学を卒業します。", "らいねん だいがくを そつぎょうします。", "明年大學畢業。"],
     ["5", "アニメ", "", "動畫", "日本のアニメが好きです。", "にほんの あにめが すきです。", "我喜歡日本動畫。"],
     ["5", "え", "絵", "畫", "きれいな絵を見ました。", "きれいな えを みました。", "看了漂亮的畫。"],
-    ["5", "けしき", "景色", "風景", "ここは景色がいいですね。", "這裡是景色很好呢。", "這裡風景很好呢。"],
+    ["5", "けしき", "景色", "風景", "ここは景色がいいですね。", "ここは けしきが いいですね。", "這裡風景很好呢。"],
     ["5", "じてんしゃ", "自転車", "腳踏車", "自転車で駅へ行きます。", "じてんしゃで えきへ いきます。", "騎腳踏車去車站。"],
     ["5", "しゃしん", "写真", "照片", "ここで写真を撮りましょう。", "ここで しゃしんを とりましょう。", "在這裡拍照吧。"],
-    ["5", "とります", "撮ります", "拍攝", "景色の写真を撮ります。", "けしきの しゃしんを とりましょう。", "拍風景照。"],
+    ["5", "とります", "撮ります", "拍攝", "景色の写真を撮ります。", "けしきの しゃしんを とります。", "拍風景照。"],
     ["5", "かります", "借ります", "借入", "友達に本を借りました。", "ともだちに ほんを かりました。", "向朋友借了書。"],
     ["5", "ほしい", "欲しい", "想要的", "新しいパソコンが欲しいです。", "あたらしい ぱそこんが ほしいです。", "我想要新電腦。"],
     ["5", "すき", "好き", "喜歡的", "日本の料理が好きです。", "にほんの りょうりが すきです。", "喜歡日本料理。"],
@@ -390,7 +396,7 @@ word_db = [
     ["7", "みちがわかりません", "道が分かりません", "不認路/迷路", "すみません、道が分りません。", "すみません みちが わかりません。", "不好意思，我不認路。"],
     ["7", "かいさつ", "改札", "驗票口", "改札の前で待ちます。", "かいさつの まえで まちます。", "在驗票口前等候。"],
     ["7", "き", "木", "樹", "公園に大きな木があります。", "こうえんに おおきな きが あります。", "公園裡有棵大樹。"],
-    ["7", "こうばん", "交番", "派出所", "交番で道を聞きます。", "こうばんで みちを ききます。", "在派出所問路。"],
+    ["7", "こうばん", "こうばん", "派出所", "交番で道を聞きます。", "こうばんで みちを ききます。", "在派出所問路。"],
     ["7", "じどうはんばいき", "自動販売機", "自動販賣機", "自動販売機で飲み物を買います。", "じどうはんばいきで のみものを かいます。", "在自動販賣機買飲料。"],
     ["7", "ばすてい", "バス停", "公車站", "バス停に人が並んでいます。", "ばすていに ひとが ならんで います。", "公車站有人在排隊。"],
     ["7", "ポスト", "", "郵筒", "ポストに手紙を出します。", "ぽすとに てがみを だします。", "把信投入郵筒。"],
@@ -520,166 +526,114 @@ word_db = [
     ["8", "よかったですね", "", "太好了呢", "試験に合格して、よかったですね。", "しけんに ごうかくして よかったですね。", "考試合格了，真是太好了呢。"]
 ]
 
-class JpLearningApp:
-    def __init__(self, root):
-        self.root = root
-        self.root.title("日文學習系統")
-        self.root.geometry("800x1000")
-        self.root.configure(bg=COLOR["bg"])
-        
-        self.current_idx = 0
-        self.active_list = []
-        self.is_running = False
-        self.paused = threading.Event()
-        self.paused.set()
-        
-        # 暫停秒數變數 (內定 2.5 秒)
-        self.pause_duration = tk.DoubleVar(value=2.5)
-        
-        self.main_menu()
+# --- Streamlit 狀態管理 (Session State) ---
+if "current_idx" not in st.session_state:
+    st.session_state.current_idx = 0
 
-    def _clear_ui(self):
-        for w in self.root.winfo_children():
-            w.destroy()
-
-    def main_menu(self):
-        self.is_running = False
-        self._clear_ui()
-        
-        # 將結束按鍵移至視窗頂端以方便在螢幕操作
-        tk.Button(self.root, text="結束程式", font=("Microsoft JhengHei", 18), 
-                  bg="#E74C3C", fg="white", command=self.root.destroy).pack(side="top", pady=10, fill="x")
-        
-        tk.Label(self.root, text="會日語 單字學習系統", font=("Microsoft JhengHei", 20, "bold"), 
-                 bg=COLOR["bg"], fg="#34495E").pack(pady=10)
-        
-        # 暫停秒數設定區
-        setting_frame = tk.Frame(self.root, bg=COLOR["bg"])
-        setting_frame.pack(pady=10)
-        tk.Label(setting_frame, text="朗讀後暫停秒數:", font=("Microsoft JhengHei", 16), bg=COLOR["bg"]).pack(side="left")
-        spin = tk.Spinbox(setting_frame, from_=0.5, to=10.0, increment=0.5, 
-                          textvariable=self.pause_duration, font=("Microsoft JhengHei", 16), width=5)
-        spin.pack(side="left", padx=10)
-        tk.Label(setting_frame, text="秒", font=("Microsoft JhengHei", 16), bg=COLOR["bg"]).pack(side="left")
-
-        btn_frame = tk.Frame(self.root, bg=COLOR["bg"])
-        btn_frame.pack(expand=True, pady=20)
-        
-        for i in range(1, 9):
-            btn = tk.Button(btn_frame, text=f"第 {i} 課", font=("Microsoft JhengHei", 16), 
-                            width=8, height=2, bg=COLOR["btn"],
-                            command=lambda l=str(i): self.start_study(l))
-            btn.grid(row=(i-1)//2, column=(i-1)%2, padx=10, pady=10)
-
-    def start_study(self, lesson):
-        self.active_list = [w for w in word_db if str(w[0]) == lesson]
-        self.current_idx = 0
-        self.is_running = True
-        self.paused.set()
-        self.run_loop()
-
-    def run_loop(self):
-        if not self.is_running: return
-        if self.current_idx < len(self.active_list):
-            self.show_page()
-        else:
-            self.main_menu()
-
-    def show_page(self):
-        self._clear_ui()
-        data = self.active_list[self.current_idx]
-        
-        # 執行視窗頂端也加入結束按鍵
-        tk.Button(self.root, text="結束學習", font=("Microsoft JhengHei", 18), 
-                  bg="#E74C3C", fg="white", command=self.main_menu).pack(side="top", pady=10, fill="x")
-
-        # 頁面標題
-        tk.Label(self.root, text=f"第 {data[0]} 課 - 第 {self.current_idx + 1} 筆", 
-                 font=("Microsoft JhengHei", 14), bg=COLOR["bg"], fg="#7F8C8D").pack(pady=5)
-
-        # 單字卡片
-        card = tk.Frame(self.root, bg=COLOR["card"], padx=30, pady=40)
-        card.pack(pady=10, padx=10, fill="both", expand=True)
-        
-        tk.Label(card, text=data[2] or data[1], font=("MS Gothic", 32, "bold"), bg="white", fg=COLOR["kanji"]).pack(pady=5)
-        tk.Label(card, text=data[1], font=("MS Gothic", 26), bg="white", fg=COLOR["kana"]).pack(pady=5)
-        tk.Label(card, text=data[3], font=("Microsoft JhengHei", 20), bg="white", fg=COLOR["mean"]).pack(pady=10)
-        
-        # 內容字體向左對齊
-        tk.Label(card, text=f"{data[4]}\n{data[5]}\n{data[6]}", font=("Microsoft JhengHei", 18), 
-                 bg="white", fg="#566573", justify="left", wraplength=650).pack(pady=10, anchor="w")
-        
-        # 控制按鈕區
-        ctrl_frame = tk.Frame(self.root, bg=COLOR["bg"])
-        ctrl_frame.pack(side="bottom", pady=30)
-        
-        tk.Button(ctrl_frame, text="回選單", font=("Microsoft JhengHei", 14), width=6, command=self.main_menu).pack(side="left", padx=10)
-        
-        self.pause_btn = tk.Button(ctrl_frame, text="暫停", font=("Microsoft JhengHei", 14), width=6, command=self.toggle_pause)
-        self.pause_btn.pack(side="left", padx=10)
-        
-        tk.Button(ctrl_frame, text="重聽", font=("Microsoft JhengHei", 16), width=5, command=lambda: self.trigger_audio(data)).pack(side="left", padx=10)
-        
-        self.trigger_audio(data, is_auto=True)
-
-    def toggle_pause(self):
-        if self.paused.is_set():
-            self.paused.clear()
-            self.pause_btn.config(text="繼續")
-        else:
-            self.paused.set()
-            self.pause_btn.config(text="暫停")
-
-    def trigger_audio(self, data, is_auto=False):
-        threading.Thread(target=self.audio_worker, args=(data, is_auto), daemon=True).start()
-
-    def audio_worker(self, data, is_auto):
-        if not HAS_AUDIO: return
-        
-        # 播放兩次單字
-        for _ in range(2):
-            self.paused.wait()
-            if not self.is_running: return
-            self.play_sound(data[1])
-            
-        # 播放例句 (必須等例句朗讀完才動作)
-        self.paused.wait()
-        self.play_sound(data[4])
-        
-        # 自動跳轉邏輯
-        if is_auto:
-            self.wait_and_next()
-
-    def play_sound(self, text):
+# --- 語音合成與播放函式 ---
+def play_tts(text):
+    if not HAS_AUDIO:
+        return
+    try:
         filename = "temp.mp3"
         tts = gTTS(text=text, lang='ja')
         tts.save(filename)
         
-        # 確保檔案鎖定被釋放
         try:
             pygame.mixer.music.unload()
         except AttributeError:
-            pass # 針對較舊版本的 pygame 容錯
+            pass
             
         pygame.mixer.music.load(filename)
         pygame.mixer.music.play()
         while pygame.mixer.music.get_busy():
             time.sleep(0.1)
+    except Exception as e:
+        st.error(f"語音播放發生錯誤: {e}")
 
-    def wait_and_next(self):
-        # 依照設定的秒數進行等待
-        delay_seconds = self.pause_duration.get()
-        loops = int(delay_seconds * 10)
-        
-        for _ in range(loops):
-            if not self.is_running: return
-            time.sleep(0.1)
-            self.paused.wait()
-            
-        self.current_idx += 1
-        self.root.after(0, self.run_loop)
+# --- 側邊欄設定與導覽 ---
+st.sidebar.title("🇯🇵 日文單字學習系統")
+lesson_options = [f"第 {i} 課" for i in range(1, 9)]
+selected_lesson_str = st.sidebar.selectbox("選擇課程", lesson_options)
 
-if __name__ == "__main__":
-    root = tk.Tk()
-    app = JpLearningApp(root)
-    root.mainloop()
+# 取得目前選取的課別代號
+current_lesson_num = selected_lesson_str.replace("第 ", "").replace(" 課", "")
+
+if st.sidebar.button("回到首頁 / 重新開始"):
+    st.session_state.current_idx = 0
+    st.rerun()
+
+pause_sec = st.sidebar.slider("朗讀後暫停秒數", 0.5, 10.0, 2.5, 0.5)
+
+# --- 主畫面邏輯 ---
+st.title("會日語 單字學習系統 (Web 版)")
+
+# 篩選該課單字
+active_list = [w for w in word_db if str(w[0]) == current_lesson_num]
+
+if not active_list:
+    st.warning("目前該課沒有單字資料。")
+else:
+    # 確保索引範圍正確
+    if st.session_state.current_idx >= len(active_list):
+        st.session_state.current_idx = 0
+
+    data = active_list[st.session_state.current_idx]
+
+    # 顯示進度
+    st.markdown(f"### 📖 {selected_lesson_str} - 第 {st.session_state.current_idx + 1} / {len(active_list)} 筆")
+    
+    # 進度條
+    progress_val = (st.session_state.current_idx + 1) / len(active_list)
+    st.progress(progress_val)
+
+    # 卡片外觀呈現
+    st.markdown(
+        f"""
+        <div style="background-color: {COLOR['card']}; padding: 30px; border-radius: 10px; box-shadow: 2px 2px 10px rgba(0,0,0,0.1); margin-bottom: 20px;">
+            <h1 style="color: {COLOR['kanji']}; font-size: 40px; margin-bottom: 5px;">{data[2] or data[1]}</h1>
+            <h2 style="color: {COLOR['kana']}; font-size: 30px; margin-top: 0px;">{data[1]}</h2>
+            <h3 style="color: {COLOR['mean']}; font-size: 24px;">【 {data[3]} 】</h3>
+            <hr style="border: 0; border-top: 1px solid #eee; margin: 15px 0;">
+            <p style="color: #566573; font-size: 20px; line-height: 1.6; text-align: left;">
+                <b>例句：</b>{data[4]}<br>
+                <b>讀音：</b>{data[5]}<br>
+                <b>翻譯：</b>{data[6]}
+            </p>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+    # 聲音播放控制
+    if HAS_AUDIO and st.sidebar.checkbox("啟用自動語音朗讀", value=True):
+        for _ in range(2):
+            play_tts(data[1])
+        play_tts(data[4])
+        time.sleep(pause_sec)
+
+    # --- 控制按鈕區 ---
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        if st.button("⬅️ 上一筆", use_container_width=True):
+            if st.session_state.current_idx > 0:
+                st.session_state.current_idx -= 1
+                st.rerun()
+            else:
+                st.warning("已經是本課第一筆了！")
+
+    with col2:
+        if st.button("🔊 重新朗讀", use_container_width=True):
+            if HAS_AUDIO:
+                play_tts(data[1])
+                play_tts(data[4])
+
+    with col3:
+        if st.button("下一筆 ➡️", use_container_width=True):
+            if st.session_state.current_idx < len(active_list) - 1:
+                st.session_state.current_idx += 1
+                st.rerun()
+            else:
+                st.success("🎉 已經學完本課所有單字！")
+                st.session_state.current_idx = 0
