@@ -577,12 +577,13 @@ else:
     )
 
     # 語音播放功能
-    if HAS_AUDIO:
+   if HAS_AUDIO:
         try:
             filename = "temp.mp3"
             tts = gTTS(text=data[1], lang='ja')
             tts.save(filename)
-            st.audio(filename, format="audio/mp3")
+            # 在這裡加上 autoplay=True
+            st.audio(filename, format="audio/mp3", autoplay=True)
         except Exception as e:
             st.error(f"語音產生錯誤: {e}")
 
