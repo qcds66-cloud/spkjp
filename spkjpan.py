@@ -541,7 +541,7 @@ pause_sec = st.sidebar.slider("朗讀後暫停秒數", 0.5, 10.0, 2.5, 0.5)
 
 # --- 主畫面邏輯 ---
 # 這裡將標題改為較小的大小 (您可以自由調整 font-size 數值)
-st.markdown("<p style='font-size: 24px; font-weight: bold; color: #2C3E50;'>會日語 單字學習系統 (測試版)</p>", unsafe_allow_html=True)
+st.markdown("<p style='font-size: 35px; font-weight: bold; color: #2C3E50;'>會日語 單字學習系統 (測試版)</p>", unsafe_allow_html=True)
 
 active_list = [w for w in word_db if str(w[0]) == current_lesson_num]
 
