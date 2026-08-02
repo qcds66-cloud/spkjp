@@ -34,22 +34,22 @@ st.markdown(
     }}
     .app-title {{
         font-size: 18px; 
-        font-weight: bold; 
+        font-weight: bold;  
         color: {COLOR['kanji']}; 
         text-align: center;
-        margin-bottom: 15px;
+        margin-bottom: 14px;
     }}
     .vocab-card {{
         background-color: {COLOR['card']}; 
-        padding: 20px; 
+        padding: 18px; 
         border-radius: 12px; 
         box-shadow: 0 4px 12px rgba(0,0,0,0.05); 
-        margin-bottom: 15px;
+        margin-bottom: 14px;
         border: 1px solid #E2D9D2;
     }}
     @media (max-width: 768px) {{
-        .kanji-text {{ font-size: 32px !important; }}
-        .kana-text {{ font-size: 24px !important; }}
+        .kanji-text {{ font-size: 28px !important; }}
+        .kana-text {{ font-size: 20px !important; }}
         .mean-text {{ font-size: 20px !important; }}
         .sentence-box {{ font-size: 16px !important; }}
     }}
@@ -564,9 +564,9 @@ if "current_idx" not in st.session_state:
     st.session_state.current_idx = 0
 
 # --- 側邊欄設定與導覽 ---
-st.sidebar.title("會日本語 初階1單字")
+st.sidebar.title("會日本語 初階1")
 lesson_options = [f"第 {i} 課" for i in range(1, 9)]
-selected_lesson_str = st.sidebar.selectbox("選 擇 課 程", lesson_options)
+selected_lesson_str = st.sidebar.selectbox("選  擇  課  程", lesson_options)
 
 current_lesson_num = selected_lesson_str.replace("第 ", "").replace(" 課", "")
 
@@ -575,7 +575,7 @@ if st.sidebar.button("回到首頁 / 重新開始", use_container_width=True):
     st.rerun()
 
 # --- 主畫面邏輯 ---
-st.markdown(f"<p class='app-title'>會日語 單字學習系統 <br><span style='font-size: 14px; font-weight: normal; color: {COLOR['sub_text']};'></span></p>", unsafe_allow_html=True)
+st.markdown(f"<p class='app-title'>會日語 單字學習 <br><span style='font-size: 16px; font-weight: normal; color: {COLOR['sub_text']};'></span></p>", unsafe_allow_html=True)
 
 active_list = [w for w in word_db if str(w[0]) == current_lesson_num]
 
@@ -628,7 +628,7 @@ else:
     col1, col2 = st.columns(2)
     
     with col1:
-        if st.button("⬅️ 上一筆", use_container_width=True):
+        if st.button("上一筆", use_container_width=True):
             if st.session_state.current_idx > 0:
                 st.session_state.current_idx -= 1
                 st.rerun()
@@ -636,7 +636,7 @@ else:
                 st.warning("已經是本課第一筆了！")
 
     with col2:
-        if st.button("下一筆 ➡️", use_container_width=True):
+        if st.button("下一筆", use_container_width=True):
             if st.session_state.current_idx < len(active_list) - 1:
                 st.session_state.current_idx += 1
                 st.rerun()
