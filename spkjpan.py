@@ -564,7 +564,7 @@ if "current_idx" not in st.session_state:
     st.session_state.current_idx = 0
 
 # --- 側邊欄設定與導覽 ---
-st.sidebar.title("日語初階單字學習")
+st.sidebar.title("會日本語初階1單字學習")
 lesson_options = [f"第 {i} 課" for i in range(1, 9)]
 selected_lesson_str = st.sidebar.selectbox("選擇課程", lesson_options)
 
@@ -574,7 +574,7 @@ if st.sidebar.button("回到首頁 / 重新開始", use_container_width=True):
     st.session_state.current_idx = 0
     st.rerun()
 
-pause_sec = st.sidebar.slider("朗讀後暫停秒數", 0.5, 10.0, 2.5, 0.5)
+
 
 # --- 主畫面邏輯 ---
 st.markdown(f"<p class='app-title'>會日語 單字學習系統 (行動版)<br><span style='font-size: 14px; font-weight: normal; color: {COLOR['sub_text']};'>設計: Tsai</span></p>", unsafe_allow_html=True)
@@ -624,8 +624,7 @@ else:
             # 播放單字
             st.audio("word.mp3", format="audio/mp3", autoplay=True)
             
-            # 暫停指定的秒數
-            time.sleep(pause_sec)
+           
             
            
 
