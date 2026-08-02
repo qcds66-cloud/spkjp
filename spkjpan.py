@@ -8,7 +8,7 @@ try:
 except ImportError:
     HAS_AUDIO = False
 
-# --- 網頁版面與顏色設定 ---
+# --- 網頁版面與顏色設定 (莫蘭迪色系) ---
 st.set_page_config(
     page_title="日文學習系統",
     page_icon="🇯🇵",
@@ -16,10 +16,62 @@ st.set_page_config(
 )
 
 COLOR = {
-    "bg": "#E5E7E9", "card": "#FFFFFF",
-    "kanji": "#2C3E50", "kana": "#C0392B",
-    "mean": "#27AE60", "btn": "#BDC3C7"
+    "bg": "#F4F1EA",           # 莫蘭迪米色背景
+    "card": "#FFFFFF",         # 卡片純白
+    "kanji": "#4A5568",        # 莫蘭迪深灰藍 (漢字)
+    "kana": "#A37081",         # 莫蘭迪乾燥玫瑰粉 (假名)
+    "mean": "#6B8E78",         # 莫蘭迪灰綠 (中文意思)
+    "text": "#2C3E50",         # 一般文字
+    "sub_text": "#566573"      # 例句說明文字
 }
+
+# --- 行動裝置專屬 CSS 優化與莫蘭迪色彩套用 ---
+st.markdown(
+    f"""
+    <style>
+    /* 全體背景與字體風格微調 */
+    .stApp {{
+        background-color: {COLOR['bg']};
+    }}
+    
+    /* 標題與署名樣式 */
+    .app-title {{
+        font-size: 22px; 
+        font-weight: bold; 
+        color: {COLOR['kanji']}; 
+        text-align: center;
+        margin-bottom: 15px;
+    }}
+
+    /* 卡片容器 */
+    .vocab-card {{
+        background-color: {COLOR['card']}; 
+        padding: 20px; 
+        border-radius: 12px; 
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05); 
+        margin-bottom: 15px;
+        border: 1px solid #E2D9D2;
+    }}
+
+    /* 手機版字體與排版響應式優化 */
+    @media (max-width: 768px) {{
+        .kanji-text {{
+            font-size: 32px !important;
+        }}
+        .kana-text {{
+            font-size: 24px !important;
+        }}
+        .mean-text {{
+            font-size: 20px !important;
+        }}
+        .sentence-box {{
+            font-size: 16px !important;
+        }}
+    }}
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
 # --- 資料庫 (完整保留第 1-8 課) ---
 word_db = [
@@ -39,7 +91,7 @@ word_db = [
     ["1", "だいがく", "大学", "大學", "兄は大学で経済を勉強しています。", "あには だいがくで けいざいを べんきょうしています。", "哥哥正在大學學習經濟。"],
     ["1", "にほんごがっこう", "日本語学校", "日本語學校", "毎日、日本語学校に通っています。", "まいにち にほんごがっこうに かよっています。", "我每天去日本語學校上課。"],
     ["1", "おしごと", "お仕事", "工作", "お仕事は何をしていますか。", "おしごとは なにを していますか。", "您的工作是做什麼的呢？"],
-    ["1", "がくせい", "学生", "學生", "妹はまだ大学生です。", "いもうとは まだ だいがくせいです。", "妹妹還是個大學生。"],
+    ["1", "がくせい", "學生", "學生", "妹はまだ大学生です。", "いもうとは まだ だいがくせいです。", "妹妹還是個大學生。"],
     ["1", "せんせい", "先生", "老師", "田中先生はとても親切です。", "たなかせんせいは とても しんせつです。", "田中老師非常親切。"],
     ["1", "きょうし", "教師", "教師", "母は小学校の教師です。", "ははは しょうがっこうの きょうしです。", "我母親是小學教師。"],
     ["1", "かいしゃいん", "会社員", "公司職員", "父は会社員として働いています。", "ちちは かいしゃいんとして はたらいています。", "父親作為公司職員在工作。"],
@@ -392,7 +444,7 @@ word_db = [
     ["7", "みちがわかりません", "道が分かりません", "不認路/迷路", "すみません、道が分りません。", "すみません みちが わかりません。", "不好意思，我不認路。"],
     ["7", "かいさつ", "改札", "驗票口", "改札の前で待ちます。", "かいさつの まえで まちます。", "在驗票口前等候。"],
     ["7", "き", "木", "樹", "公園に大きな木があります。", "こうえんに おおきな きが あります。", "公園裡有棵大樹。"],
-    ["7", "こうばん", "交番", "派出所", "こうばんで道を聞きます。", "こうばんで みちを ききます。", "在派出所問路。"],
+    ["7", "こうばん", "こうばん", "派出所", "こうばんで道を聞きます。", "こうばんで みちを ききます。", "在派出所問路。"],
     ["7", "じどうはんばいき", "自動販売機", "自動販賣機", "自動販売機で飲み物を買います。", "じどうはんばいきで のみものを かいます。", "在自動販賣機買飲料。"],
     ["7", "ばすてい", "バス停", "公車站", "バス停に人が並んでいます。", "ばすていに ひとが ならんで います。", "公車站有人在排隊。"],
     ["7", "ポスト", "", "郵筒", "ポストに手紙を出します。", "ぽすとに てがみを だします。", "把信投入郵筒。"],
@@ -519,7 +571,7 @@ word_db = [
     ["8", "くれます", "", "給(人給我)", "友達が花をくれました。", "ともだちが はなを くれました。", "朋友送了我花。"],
     ["8", "でんわします", "電話します", "打電話", "あとで電話します。", "あとで でんわします。", "稍後打電話。"],
     ["8", "もうすぐ", "", "快要、馬上", "もうすぐ春が来ます。", "もうすぐ はるが きます。", "春天快要來了。"],
-    ["8", "よかったですね", "", "太好了呢", "試験に合格して、よかったですね。", "しけんに ごうかくして よかったですね。", "考試合格了，真是太好了呢。"]
+    ["8", "よかったですね", "", "太えたですね", "試験に合格して、よかったですね。", "しけんに ごうかくして よかったですね。", "考試合格了，真是太好了呢。"]
 ]
 
 # --- Streamlit 狀態管理 ---
@@ -527,20 +579,20 @@ if "current_idx" not in st.session_state:
     st.session_state.current_idx = 0
 
 # --- 側邊欄設定與導覽 ---
-st.sidebar.title("會日本語初階1單字學習系統")
+st.sidebar.title("日語初階單字學習")
 lesson_options = [f"第 {i} 課" for i in range(1, 9)]
 selected_lesson_str = st.sidebar.selectbox("選擇課程", lesson_options)
 
 current_lesson_num = selected_lesson_str.replace("第 ", "").replace(" 課", "")
 
-if st.sidebar.button("回到首頁 / 重新開始"):
+if st.sidebar.button("回到首頁 / 重新開始", use_container_width=True):
     st.session_state.current_idx = 0
     st.rerun()
 
 pause_sec = st.sidebar.slider("朗讀後暫停秒數", 0.5, 10.0, 2.5, 0.5)
 
 # --- 主畫面邏輯 ---
-st.markdown("<p style='font-size: 30px; font-weight: bold; color: #2C3E50;'>會日語 單字學習系統 (測試版) 設計:Tsai </p>", unsafe_allow_html=True)
+st.markdown(f"<p class='app-title'>會日語 單字學習系統 (行動版)<br><span style='font-size: 14px; font-weight: normal; color: {COLOR['sub_text']};'>設計: Tsai</span></p>", unsafe_allow_html=True)
 
 active_list = [w for w in word_db if str(w[0]) == current_lesson_num]
 
@@ -552,41 +604,54 @@ else:
 
     data = active_list[st.session_state.current_idx]
 
-    st.markdown(f"### 📖 {selected_lesson_str} - 第 {st.session_state.current_idx + 1} / {len(active_list)} 筆")
+    st.markdown(f"**📖 {selected_lesson_str}** &nbsp; (第 {st.session_state.current_idx + 1} / {len(active_list)} 筆)")
     
     progress_val = (st.session_state.current_idx + 1) / len(active_list)
     st.progress(progress_val)
 
-    # 卡片外觀呈現
+    # 莫蘭迪色系與流暢排版的單字卡片
     st.markdown(
         f"""
-        <div style="background-color: {COLOR['card']}; padding: 30px; border-radius: 10px; box-shadow: 2px 2px 10px rgba(0,0,0,0.1); margin-bottom: 20px;">
-            <h1 style="color: {COLOR['kanji']}; font-size: 30px; margin-bottom: 5px;">{data[2] or data[1]}</h1>
-            <h2 style="color: {COLOR['kana']}; font-size: 30px; margin-top: 0px;">{data[1]}</h1>
-            <h3 style="color: {COLOR['mean']}; font-size: 24px;">【 {data[3]} 】</h1>
-            <hr style="border: 0; border-top: 1px solid #eee; margin: 15px 0;">
-            <p style="color: #566573; font-size: 20px; line-height: 1.6; text-align: left;">
+        <div class="vocab-card">
+            <div class="kanji-text" style="color: {COLOR['kanji']}; font-size: 28px; font-weight: bold; margin-bottom: 2px;">{data[2] or data[1]}</div>
+            <div class="kana-text" style="color: {COLOR['kana']}; font-size: 22px; font-weight: 500; margin-top: 0px;">{data[1]}</div>
+            <div class="mean-text" style="color: {COLOR['mean']}; font-size: 18px; font-weight: bold; margin-top: 5px;">【 {data[3]} 】</div>
+            <hr style="border: 0; border-top: 1px solid #EAE3DC; margin: 12px 0;">
+            <div class="sentence-box" style="color: {COLOR['text']}; font-size: 15px; line-height: 1.6;">
                 <b>例句：</b>{data[4]}<br>
                 <b>讀音：</b>{data[5]}<br>
                 <b>翻譯：</b>{data[6]}
-            </p>
+            </div>
         </div>
         """,
         unsafe_allow_html=True
     )
 
-    # --- 自動朗讀功能 (隱藏播放控制項，直接載入並自動播放) ---
+    # --- 自動朗讀功能 (單字朗讀後，接著朗讀例句讀音) ---
     if HAS_AUDIO:
         try:
-            filename = "temp.mp3"
-            tts = gTTS(text=data[1], lang='ja')
-            tts.save(filename)
-            # 使用 autoplay=True 讓系統切換到單字時自動發音，並設定 height=0 隱藏多餘的控制面板
-            st.audio(filename, format="audio/mp3", autoplay=True)
+            # 產生單字發音
+            tts_word = gTTS(text=data[1], lang='ja')
+            tts_word.save("word.mp3")
+            
+            # 產生例句假名讀音發音
+            tts_sent = gTTS(text=data[5], lang='ja')
+            tts_sent.save("sent.mp3")
+
+            # 播放單字
+            st.audio("word.mp3", format="audio/mp3", autoplay=True)
+            
+            # 依照使用者設定的暫停秒數讓系統稍作停留
+            time.sleep(pause_sec)
+            
+            # 播放例句假名
+            st.audio("sent.mp3", format="audio/mp3", autoplay=True)
+
         except Exception as e:
             st.error(f"語音產生錯誤: {e}")
 
-    # --- 控制按鈕區 ---
+    # --- 控制按鈕區 (針對手機觸控優化間距) ---
+    st.markdown("<br>", unsafe_allow_html=True)
     col1, col2, col3 = st.columns(3)
     
     with col1:
