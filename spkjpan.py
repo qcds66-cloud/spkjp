@@ -33,7 +33,7 @@ st.markdown(
         background-color: {COLOR['bg']};
     }}
     .app-title {{
-        font-size: 22px; 
+        font-size: 18px; 
         font-weight: bold; 
         color: {COLOR['kanji']}; 
         text-align: center;
