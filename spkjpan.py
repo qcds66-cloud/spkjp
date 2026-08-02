@@ -644,8 +644,8 @@ else:
                 st.warning("已經是本課第一筆了！")
 
     with col2:
-        if st.button("🔊 重新播放", use_container_width=True):
-            st.rerun()
+       # if st.button("🔊 重新播放", use_container_width=True):
+        #    st.rerun()
 
     with col3:
         if st.button("下一筆 ➡️", use_container_width=True):
