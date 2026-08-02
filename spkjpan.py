@@ -637,8 +637,8 @@ else:
 
     # --- 控制按鈕區 ---
     st.markdown("<br>", unsafe_allow_html=True)
-   # col1, col2, col3 = st.columns(3)
-     col1, col2  = st.columns(2)
+    col1, col2, col3 = st.columns(3)
+    # col1, col2  = st.columns(2)
     with col1:
         if st.button("⬅️ 上一筆", use_container_width=True):
             if st.session_state.current_idx > 0:
@@ -647,11 +647,11 @@ else:
             else:
                 st.warning("已經是本課第一筆了！")
 
-   # with col2:
+    with col2:
     #    if st.button("🔊 重新播放", use_container_width=True):
      #       st.rerun()
 
-    with col2:
+    with col3:
         if st.button("下一筆 ➡️", use_container_width=True):
             if st.session_state.current_idx < len(active_list) - 1:
                 st.session_state.current_idx += 1
