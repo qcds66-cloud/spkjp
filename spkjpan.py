@@ -564,9 +564,9 @@ if "current_idx" not in st.session_state:
     st.session_state.current_idx = 0
 
 # --- 側邊欄設定與導覽 ---
-st.sidebar.title("日語初階單字學習")
+st.sidebar.title("會日本語 初階1單字")
 lesson_options = [f"第 {i} 課" for i in range(1, 9)]
-selected_lesson_str = st.sidebar.selectbox("選擇課程", lesson_options)
+selected_lesson_str = st.sidebar.selectbox("選 擇 課 程", lesson_options)
 
 current_lesson_num = selected_lesson_str.replace("第 ", "").replace(" 課", "")
 
@@ -577,7 +577,7 @@ if st.sidebar.button("回到首頁 / 重新開始", use_container_width=True):
 # pause_sec = st.sidebar.slider("朗讀後暫停秒數", 0.5, 10.0, 2.5, 0.5)
 
 # --- 主畫面邏輯 ---
-st.markdown(f"<p class='app-title'>會日語 單字學習系統 )<br><span style='font-size: 14px; font-weight: normal; color: {COLOR['sub_text']};'></span></p>", unsafe_allow_html=True)
+st.markdown(f"<p class='app-title'>會日語 單字學習系統 <br><span style='font-size: 14px; font-weight: normal; color: {COLOR['sub_text']};'></span></p>", unsafe_allow_html=True)
 
 active_list = [w for w in word_db if str(w[0]) == current_lesson_num]
 
