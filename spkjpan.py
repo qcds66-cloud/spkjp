@@ -619,9 +619,7 @@ else:
             tts_word = gTTS(text=data[1], lang='ja')
             tts_word.save("word.mp3")
             
-            # 產生例句假名讀音發音 (明確指定 lang='ja')
-            tts_sent = gTTS(text=data[5], lang='ja')
-            tts_sent.save("sent.mp3")
+          
 
             # 播放單字
             st.audio("word.mp3", format="audio/mp3", autoplay=True)
@@ -629,8 +627,7 @@ else:
             # 暫停指定的秒數
             time.sleep(pause_sec)
             
-            # 播放例句假名
-            st.audio("sent.mp3", format="audio/mp3", autoplay=True)
+           
 
         except Exception as e:
             st.info("💡 語音連線正在重新整理或伺服器忙碌中，您可以繼續點擊上下一筆學習。")
