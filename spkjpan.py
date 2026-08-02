@@ -575,7 +575,8 @@ if st.sidebar.button("回到首頁 / 重新開始", use_container_width=True):
     st.rerun()
 
 # --- 主畫面邏輯 ---
-st.markdown(f"<p class='app-title'>會日語 單字學習 <br><span style='font-size: 16px; font-weight: normal; color: {COLOR['sub_text']};'></span></p>", unsafe_allow_html=True)
+st.markdown(f"<p class='app-title'>會日語 單字學習 測試版 <br><span style='font-size: 16px; font-weight: normal; color: {COLOR['sub_text']};'></span></p>", unsafe_allow_html=True)
+st.markdown(f"<p class='app-title'>設計:Tsai Hung Mou <br><span style='font-size: 16px; font-weight: normal; color: {COLOR['sub_text']};'></span></p>", unsafe_allow_html=True)
 
 active_list = [w for w in word_db if str(w[0]) == current_lesson_num]
 
