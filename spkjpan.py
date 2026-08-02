@@ -574,10 +574,10 @@ if st.sidebar.button("回到首頁 / 重新開始", use_container_width=True):
     st.session_state.current_idx = 0
     st.rerun()
 
-pause_sec = st.sidebar.slider("朗讀後暫停秒數", 0.5, 10.0, 2.5, 0.5)
+# pause_sec = st.sidebar.slider("朗讀後暫停秒數", 0.5, 10.0, 2.5, 0.5)
 
 # --- 主畫面邏輯 ---
-st.markdown(f"<p class='app-title'>會日語 單字學習系統 (行動版)<br><span style='font-size: 14px; font-weight: normal; color: {COLOR['sub_text']};'>設計: Tsai</span></p>", unsafe_allow_html=True)
+st.markdown(f"<p class='app-title'>會日語 單字學習系統 )<br><span style='font-size: 14px; font-weight: normal; color: {COLOR['sub_text']};'></span></p>", unsafe_allow_html=True)
 
 active_list = [w for w in word_db if str(w[0]) == current_lesson_num]
 
@@ -598,11 +598,11 @@ else:
     st.markdown(
         f"""
         <div class="vocab-card">
-            <div class="kanji-text" style="color: {COLOR['kanji']}; font-size: 28px; font-weight: bold; margin-bottom: 2px;">{data[2] or data[1]}</div>
+            <div class="kanji-text" style="color: {COLOR['kanji']}; font-size: 24px; font-weight: bold; margin-bottom: 2px;">{data[2] or data[1]}</div>
             <div class="kana-text" style="color: {COLOR['kana']}; font-size: 22px; font-weight: 500; margin-top: 0px;">{data[1]}</div>
             <div class="mean-text" style="color: {COLOR['mean']}; font-size: 18px; font-weight: bold; margin-top: 5px;">【 {data[3]} 】</div>
             <hr style="border: 0; border-top: 1px solid #EAE3DC; margin: 12px 0;">
-            <div class="sentence-box" style="color: {COLOR['text']}; font-size: 15px; line-height: 1.6;">
+            <div class="sentence-box" style="color: {COLOR['text']}; font-size: 15px; line-height: 1.3;">
                 <b>例句：</b>{data[4]}<br>
                 <b>讀音：</b>{data[5]}<br>
                 <b>翻譯：</b>{data[6]}
@@ -620,17 +620,17 @@ else:
             tts_word.save("word.mp3")
             
             # 產生例句假名讀音發音 (明確指定 lang='ja')
-            tts_sent = gTTS(text=data[5], lang='ja')
-            tts_sent.save("sent.mp3")
+       #     tts_sent = gTTS(text=data[5], lang='ja')
+        #    tts_sent.save("sent.mp3")
 
             # 播放單字
             st.audio("word.mp3", format="audio/mp3", autoplay=True)
             
             # 暫停指定的秒數
-            time.sleep(pause_sec)
+         #   time.sleep(pause_sec)
             
             # 播放例句假名
-            st.audio("sent.mp3", format="audio/mp3", autoplay=True)
+          #  st.audio("sent.mp3", format="audio/mp3", autoplay=True)
 
         except Exception as e:
             st.info("💡 語音連線正在重新整理或伺服器忙碌中，您可以繼續點擊上下一筆學習。")
@@ -648,8 +648,8 @@ else:
                 st.warning("已經是本課第一筆了！")
 
     with col2:
-      #  if st.button("🔊 重新播放", use_container_width=True):
-       #     st.rerun()
+         if st.button("🔊 重新播放", use_container_width=True):
+            st.rerun()
 
     with col3:
         if st.button("下一筆 ➡️", use_container_width=True):
