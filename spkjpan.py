@@ -564,7 +564,7 @@ if "current_idx" not in st.session_state:
     st.session_state.current_idx = 0
 
 # --- 側邊欄設定與導覽 ---
-st.sidebar.title("會日本語初階1單字學習")
+st.sidebar.title("會日本語初階1單字")
 lesson_options = [f"第 {i} 課" for i in range(1, 9)]
 selected_lesson_str = st.sidebar.selectbox("選擇課程", lesson_options)
 
@@ -577,7 +577,7 @@ if st.sidebar.button("回到首頁 / 重新開始", use_container_width=True):
 
 
 # --- 主畫面邏輯 ---
-st.markdown(f"<p class='app-title'>會日語 單字學習系統 (行動版)<br><span style='font-size: 14px; font-weight: normal; color: {COLOR['sub_text']};'>設計: Tsai</span></p>", unsafe_allow_html=True)
+st.markdown(f"<p class='app-title'>會日語初階1 單字學習系統 <br><span style='font-size: 14px; font-weight: normal; color: {COLOR['sub_text']};'>設計: Tsai</span></p>", unsafe_allow_html=True)
 
 active_list = [w for w in word_db if str(w[0]) == current_lesson_num]
 
@@ -598,7 +598,7 @@ else:
     st.markdown(
         f"""
         <div class="vocab-card">
-            <div class="kanji-text" style="color: {COLOR['kanji']}; font-size: 28px; font-weight: bold; margin-bottom: 2px;">{data[2] or data[1]}</div>
+            <div class="kanji-text" style="color: {COLOR['kanji']}; font-size: 24px; font-weight: bold; margin-bottom: 2px;">{data[2] or data[1]}</div>
             <div class="kana-text" style="color: {COLOR['kana']}; font-size: 22px; font-weight: 500; margin-top: 0px;">{data[1]}</div>
             <div class="mean-text" style="color: {COLOR['mean']}; font-size: 18px; font-weight: bold; margin-top: 5px;">【 {data[3]} 】</div>
             <hr style="border: 0; border-top: 1px solid #EAE3DC; margin: 12px 0;">
