@@ -574,7 +574,7 @@ if st.sidebar.button("回到首頁 / 重新開始", use_container_width=True):
     st.session_state.current_idx = 0
     st.rerun()
 
-pause_sec = st.sidebar.slider("朗讀後暫停秒數", 0.5, 10.0, 2.5, 0.5)
+# pause_sec = st.sidebar.slider("朗讀後暫停秒數", 0.5, 10.0, 2.5, 0.5)
 
 # --- 主畫面邏輯 ---
 st.markdown(f"<p class='app-title'>會日語 單字學習系統 (行動版)<br><span style='font-size: 14px; font-weight: normal; color: {COLOR['sub_text']};'>設計: Tsai</span></p>", unsafe_allow_html=True)
@@ -620,25 +620,25 @@ else:
             tts_word.save("word.mp3")
             
             # 產生例句假名讀音發音 (明確指定 lang='ja')
-            tts_sent = gTTS(text=data[5], lang='ja')
-            tts_sent.save("sent.mp3")
+          #  tts_sent = gTTS(text=data[5], lang='ja')
+          #  tts_sent.save("sent.mp3")
 
             # 播放單字
             st.audio("word.mp3", format="audio/mp3", autoplay=True)
             
             # 暫停指定的秒數
-            time.sleep(pause_sec)
+          #  time.sleep(pause_sec)
             
             # 播放例句假名
-            st.audio("sent.mp3", format="audio/mp3", autoplay=True)
+          #  st.audio("sent.mp3", format="audio/mp3", autoplay=True)
 
         except Exception as e:
             st.info("💡 語音連線正在重新整理或伺服器忙碌中，您可以繼續點擊上下一筆學習。")
 
     # --- 控制按鈕區 ---
     st.markdown("<br>", unsafe_allow_html=True)
-    col1, col2, col3 = st.columns(3)
-    
+   # col1, col2, col3 = st.columns(3)
+     col1, col2  = st.columns(2)
     with col1:
         if st.button("⬅️ 上一筆", use_container_width=True):
             if st.session_state.current_idx > 0:
@@ -647,11 +647,11 @@ else:
             else:
                 st.warning("已經是本課第一筆了！")
 
-    with col2:
-        if st.button("🔊 重新播放", use_container_width=True):
-            st.rerun()
+   # with col2:
+    #    if st.button("🔊 重新播放", use_container_width=True):
+     #       st.rerun()
 
-    with col3:
+    with col2:
         if st.button("下一筆 ➡️", use_container_width=True):
             if st.session_state.current_idx < len(active_list) - 1:
                 st.session_state.current_idx += 1
